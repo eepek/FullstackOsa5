@@ -24,10 +24,32 @@ const addBlog = async (blog) => {
     const response = await axios.post(baseUrl, blog, config)
     return response.data
   } catch(error) {
+    console.log("Error", error.data)
+  }
+  }
+
+const updateBlog = async (blog, blogId) => {
+  try {
+    console.log(blogId)
+    const response = await axios.put(`${baseUrl}/${blogId}`, blog)
+    return response
+  } catch(error) {
+    console.log("Error happened", error.response)
+  }
+}
+
+const removeBlog = async (blogId) => {
+  const config = {
+    headers: {Authorization: token },
+  }
+  try {
+    const response = await axios.delete(`${baseUrl}/${blogId}`, config)
+    return response
+  } catch (error) {
     console.log(error)
   }
-  }
+}
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, addBlog, setToken}
+export default { getAll, addBlog, updateBlog, removeBlog, setToken}
