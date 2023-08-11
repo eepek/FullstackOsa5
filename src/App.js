@@ -76,11 +76,11 @@ const App = () => {
         infoHandler('info', `Blog "${blog.title}" by ${blog.author} added`)
         return true
       }
-      } catch(error) {
-        console.log(error)
-        infoHandler('error', 'Could not add blog to database')
-        return false
-      }
+    } catch(error) {
+      console.log(error)
+      infoHandler('error', 'Could not add blog to database')
+      return false
+    }
   }
 
   const likeHandler = async (blog) => {
@@ -89,9 +89,9 @@ const App = () => {
     blog.user = userId
     delete blog.id
     blog.likes = blog.likes + 1
-    console.log(blog)
+    // console.log(blog)
     const response = await blogService.updateBlog(blog, blogId)
-    console.log(response.status)
+    // console.log(response.status)
     if (response.status === 200) {
       fetchBlogs()
     }
@@ -115,33 +115,35 @@ const App = () => {
 
   if (user) {
 
-  return (
+    return (
 
-    <div>
-      <h2>Blogs</h2>
-      <Notification message={infoMessage} type={infoType}/>
-      <p>{user.name} is logged in.</p>
-      <button onClickCapture={logOut}>Logout</button><br />
-      {blogs.map(blog =>
       <div>
-        <Blog key={blog.id} blog={blog} likeHandler={likeHandler} removeHandler={removeHandler} userName={user.username}/>
+        <h2>Blogs</h2>
+        <Notification message={infoMessage} type={infoType}/>
+        <p>{user.name} is logged in.</p>
+        <button onClickCapture={logOut}>Logout</button><br />
+        <br/>
+        <Togglable buttonLabel='Add blog' ref={blogPostRef}>
+          <AddNew createBlogEntry={addBlog} infoHandler={infoHandler} />
+        </Togglable>
+        <br />
+        <div id='blog-div-for-testing'>
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} likeHandler={likeHandler} removeHandler={removeHandler} userName={user.username}/>
+          )}
+        </div>
       </div>
-      )}<br/>
-      <Togglable buttonLabel='Add blog' ref={blogPostRef}>
-        <AddNew createBlogEntry={addBlog} infoHandler={infoHandler} />
-      </Togglable>
-    </div>
-  )
+    )
   } else {
 
-  return (
-    <div>
-      <h2>Log in to application</h2>
-      <Notification message={infoMessage} type={infoType}/>
-      <Login setUsername={setUsername} handleLogin={handleLogin} username={username}
-      setPassword={setPassword} password={password}/>
-    </div>
-  )
+    return (
+      <div>
+        <h2>Log in to application</h2>
+        <Notification message={infoMessage} type={infoType}/>
+        <Login setUsername={setUsername} handleLogin={handleLogin} userName={username}
+          setPassword={setPassword} password={password}/>
+      </div>
+    )
   }
 
 }

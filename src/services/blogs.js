@@ -10,37 +10,37 @@ const setToken = (newToken) => {
 const getAll = async () => {
   const request = await axios.get(baseUrl)
   const blogs = request.data
-  console.log(blogs)
+  // console.log(blogs)
   return blogs
 }
 
 const addBlog = async (blog) => {
   const config = {
-    headers: {Authorization: token },
+    headers: { Authorization: token },
   }
-  console.log(config)
-  console.log(blog)
+  // console.log(config)
+  // console.log(blog)
   try {
     const response = await axios.post(baseUrl, blog, config)
     return response.data
   } catch(error) {
-    console.log("Error", error.data)
+    console.log('Error', error.data)
   }
-  }
+}
 
 const updateBlog = async (blog, blogId) => {
   try {
-    console.log(blogId)
+    // console.log(blogId)
     const response = await axios.put(`${baseUrl}/${blogId}`, blog)
     return response
   } catch(error) {
-    console.log("Error happened", error.response)
+    console.log('Error happened', error.response)
   }
 }
 
 const removeBlog = async (blogId) => {
   const config = {
-    headers: {Authorization: token },
+    headers: { Authorization: token },
   }
   try {
     const response = await axios.delete(`${baseUrl}/${blogId}`, config)
@@ -50,6 +50,4 @@ const removeBlog = async (blogId) => {
   }
 }
 
-
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, addBlog, updateBlog, removeBlog, setToken}
+export default { getAll, addBlog, updateBlog, removeBlog, setToken }

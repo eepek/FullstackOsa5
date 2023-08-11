@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const Blog = ({blog, likeHandler, removeHandler, userName}) => {
+const Blog = ({ blog, likeHandler, removeHandler, userName }) => {
   const [fullView, setFullView] = useState(false)
   const [buttonText, setButtonText] = useState('view')
   // console.log(userName)
@@ -14,7 +15,7 @@ const Blog = ({blog, likeHandler, removeHandler, userName}) => {
   }
 
   const fullViewStyle = {
-    display: fullView ? '' : 'none',
+    // display: fullView ? '' : 'none',
     fontWeight: 'normal'
   }
 
@@ -37,22 +38,34 @@ const Blog = ({blog, likeHandler, removeHandler, userName}) => {
     }
   }
 
-  return (
-  <div style={blogStyle}>
-    <div >
-      {blog.title} {blog.author} <button onClick={toggleFullView}>{buttonText}</button>
-    </div>
-
-    <div style={fullViewStyle}>
-      <a href={blog.url}>{blog.url}</a><br />
-      {blog.likes}<button onClick={() => likeHandler(blog)}>like</button><br />
-      {blog.user.name}<br />
-      {(blog.user.username === userName) && removeButton()}
-    </div>
-
-
-  </div>
-  )
+  const extraInfo = () => {
+    return (
+      <div style={fullViewStyle}>
+        <p>URL: <a href={blog.url}>{blog.url}</a></p>
+        <p>Likes: {blog.likes} <button onClick={() => likeHandler(blog)}>like</button></p>
+        <p>Added by: {blog.user.name}</p>
+        {(blog.user.username === userName) && removeButton()}
+      </div>
+    )
   }
+
+  return (
+    <div style={blogStyle}>
+      <div>
+        {blog.title} {blog.author} <button onClick={toggleFullView}>{buttonText}</button>
+      </div>
+
+      {fullView && extraInfo()}
+
+    </div>
+  )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  likeHandler: PropTypes.func.isRequired,
+  removeHandler: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired
+}
 
 export default Blog
